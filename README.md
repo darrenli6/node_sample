@@ -1,4 +1,4 @@
-# Google 第三方登录
+# Google 第三方登录demo
 
 ## 安装及运行
 
@@ -12,39 +12,24 @@
 npm install
 npm start
 ```
+3. 配置 Google OAuth 2.0
 
-並直接開啟服務 `{host}/index.html` 即可體驗第三方登入的功能。
+在 Google Developers Console 中创建项目后,需要进行以下配置:
 
-## 專案檔案說明
+- 在"OAuth 同意屏幕"中设置应用名称、用户支持电子邮件等基本信息
+- 在"凭据"页面创建 OAuth 2.0 客户端 ID
+- 添加授权的重定向 URI,例如: `http://localhost:4321/auth/google/callback`
+- 记录生成的客户端 ID 和客户端密钥
 
-<table>
-  <thead>
-    <tr>
-      <th>檔案路徑</th>
-      <th>用途</th>
-      <th>備註</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>.env | .env.sample</td>
-      <td>環境變數 | 環境變數範例檔案</td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>/routes/index.js</td>
-      <td>主要第三方登入範例檔案</td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>/public/index.html</td>
-      <td>入口前端檔案</td>
-      <td></td>
-    </tr>
-  </tbody>
-</table>
+4. 环境变量说明
 
-## 參考
+- GOOGLE_CLIENT_ID: Google OAuth 2.0 客户端 ID
+- GOOGLE_SECRET_KEY: Google OAuth 2.0 客户端密钥 
+- HOST: 应用程序主机地址
+- JWT_SECRET: JWT 签名密钥
+ 
+
+## 参考
 
 - [Google Developers Console](https://console.developers.google.com/)
 - [Google Auth Library](https://www.npmjs.com/package/google-auth-library)
