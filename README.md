@@ -1,48 +1,51 @@
-# Astro Starter Kit: Basics
+# Google 第三方登录
 
-```sh
-npm create astro@latest -- --template basics
+## 安装及运行
+
+1. 建立环境变量
+
+请自行前往 [Google Developers Console](https://console.developers.google.com/) 申请 OAuth 2.0 凭证，并将 .env.sample 转为 `.env` 文件，按照需求填入。
+
+2. 终端输入：
+
+```
+npm install
+npm start
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+並直接開啟服務 `{host}/index.html` 即可體驗第三方登入的功能。
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## 專案檔案說明
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
+<table>
+  <thead>
+    <tr>
+      <th>檔案路徑</th>
+      <th>用途</th>
+      <th>備註</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>.env | .env.sample</td>
+      <td>環境變數 | 環境變數範例檔案</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>/routes/index.js</td>
+      <td>主要第三方登入範例檔案</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>/public/index.html</td>
+      <td>入口前端檔案</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
 
-## 🚀 Project Structure
+## 參考
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
-
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- [Google Developers Console](https://console.developers.google.com/)
+- [Google Auth Library](https://www.npmjs.com/package/google-auth-library)
+- [OpenID Connect Discovery](https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderMetadata)

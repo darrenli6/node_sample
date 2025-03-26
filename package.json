@@ -9,6 +9,9 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.5.4"
+    "@types/jsonwebtoken": "^9.0.9",
+    "astro": "^5.5.4",
+    "google-auth-library": "^9.15.1",
+    "jsonwebtoken": "^9.0.2"
   }
 }
