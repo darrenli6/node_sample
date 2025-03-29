@@ -2,20 +2,180 @@
 import Layout from '../layouts/Layout.astro';
 import ContextAlert from '../components/ContextAlert.astro';
 import Markdown from '../components/Markdown.astro';
+import { Editor } from '@tinymce/tinymce-react';
 
-const explainer = `
-An Astro website can go way beyond static pages - on the right platform.
-
-Netlify supports not only [Streaming SSR](https://docs.astro.build/en/guides/server-side-rendering/#html-streaming) and fast [Edge Middleware](https://docs.astro.build/en/guides/middleware/), but also [on-demand revalidation](https://www.netlify.com/blog/cache-tags-and-purge-api-on-netlify/) and [stale-while-revalidate](https://www.netlify.com/blog/swr-and-fine-grained-cache-control/). 
-Any page or data can be rebuilt only when needed, without site visitors ever getting a performance hit.
-`;
+const apiKey = '';
+const fromEmail = '';
+const toEmail = '';
+const subject = 'Test Email';
 ---
 
-<Layout title="Welcome to Astro.">
-    <ContextAlert class="mb-8" />
-    <h1 class="mb-10">Netlify Platform Starter for Astro</h1>
-    <Markdown content={explainer} class="mb-10 text-lg" />
-    <p>
-        <a href="https://docs.netlify.com/frameworks/astro/" class="btn btn-lg sm:min-w-64">Read the Docs</a>
-    </p>
+<Layout title="Resend Email Client">
+    <div class="max-w-4xl mx-auto p-6">
+        <h1 class="text-3xl text-white font-bold mb-8">Email Client</h1>
+
+        <form class="space-y-6" id="emailForm">
+            <div class="relative">
+                <label class="block text-sm text-white font-medium text-gray-700 mb-2">API Key</label>
+                <div class="relative">
+                    <input
+                        type="password"
+                        id="apiKey"
+                        value={apiKey}
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        required
+                    />
+                    <button type="button" id="togglePassword" class="absolute right-3 top-1/2 -translate-y-1/2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
+                            <path
+                                fill-rule="evenodd"
+                                d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-white text-sm font-medium text-gray-700 mb-2">From Email</label>
+                <input
+                    type="email"
+                    id="fromEmail"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    required
+                    value={fromEmail}
+                />
+            </div>
+
+            <div>
+                <label class="block text-white text-sm font-medium text-gray-700 mb-2">To Email</label>
+                <input
+                    type="email"
+                    id="toEmail"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    required
+                    value={toEmail}
+                />
+            </div>
+
+            <div>
+                <label class="block text-sm text-white font-medium text-gray-700 mb-2">Subject</label>
+                <input
+                    type="text"
+                    id="subject"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    required
+                    value={subject}
+                />
+            </div>
+
+            <div>
+                <label class="block text-white text-sm font-medium text-gray-700 mb-2">Content</label>
+                <div class="border border-gray-300 rounded-lg">
+                    <Editor
+                        client:load
+                        id="editor"
+                        init={{
+                            height: 500,
+                            menubar: true,
+                            plugins: [
+                                'advlist',
+                                'autolink',
+                                'lists',
+                                'link',
+                                'image',
+                                'charmap',
+                                'preview',
+                                'anchor',
+                                'searchreplace',
+                                'visualblocks',
+                                'code',
+                                'fullscreen',
+                                'insertdatetime',
+                                'media',
+                                'table',
+                                'help',
+                                'wordcount'
+                            ],
+                            toolbar:
+                                'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
+                            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+                        }}
+                    />
+                </div>
+            </div>
+
+            <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200"> Send Email </button>
+        </form>
+    </div>
 </Layout>
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
+<script>
+    import { Resend } from 'resend';
+    import tinymce from 'tinymce';
+
+    // 初始化富文本编辑器
+    tinymce.init({
+        selector: '#editor',
+        height: 300,
+        menubar: false,
+        plugins: [
+            'advlist',
+            'autolink',
+            'lists',
+            'link',
+            'image',
+            'charmap',
+            'preview',
+            'anchor',
+            'searchreplace',
+            'visualblocks',
+            'code',
+            'fullscreen',
+            'insertdatetime',
+            'media',
+            'table',
+            'code',
+            'help',
+            'wordcount'
+        ],
+        toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help'
+    });
+
+    // 密码显示切换
+    const togglePassword = document.getElementById('togglePassword');
+    const apiKeyInput = document.getElementById('apiKey');
+
+    togglePassword.addEventListener('click', function () {
+        const type = apiKeyInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        apiKeyInput.setAttribute('type', type);
+    });
+
+    // 表单提交处理
+    document.getElementById('emailForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const apiKey = document.getElementById('apiKey').value;
+        const fromEmail = document.getElementById('fromEmail').value;
+        const toEmail = document.getElementById('toEmail').value;
+        const subject = document.getElementById('subject').value;
+        const content = tinymce.get('editor').getContent();
+
+        try {
+            const response = await fetch(
+                `/api/email?apiKey=${apiKey}&fromEmail=${fromEmail}&toEmail=${toEmail}&subject=${subject}&content=${encodeURIComponent(content)}`
+            );
+            const data = await response.json();
+            console.log(data);
+
+            alert('Email sent successfully');
+
+            e.target.reset();
+            tinymce.get('editor').setContent('');
+        } catch (error) {
+            alert('An error occurred: ' + error.message);
+        }
+    });
+</script>
